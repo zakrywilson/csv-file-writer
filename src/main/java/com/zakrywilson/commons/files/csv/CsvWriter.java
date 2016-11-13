@@ -19,36 +19,10 @@ public final class CsvWriter implements AutoCloseable {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The number of columns in the CSV file. Default is <tt>0</tt> in which case the number of
-     * columns will not be checked when {@link CsvWriter#write(String...)} is called.
-     */
-    private int columnCount;
-
-    /**
-     * The end-of-line character used in the CSV file. Default is the system's line break.
-     */
-    private String eol = System.lineSeparator();
-
-    /**
      * The <a href="http://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html#syntax">format
      * string</a> used to format a single line in the file.
      */
-    private String format;
-
-    /**
-     * Determines whether the format used to write to the CSV file is ready. The formatter will
-     * need to be updated after a change to the configuration which is done through methods such as
-     * {@link CsvWriter#setColumnCount(int)}. If a change like this is made, the formatter will
-     * need to update the pre-formatted <tt>String</tt> before being used again.
-     */
-    private boolean formatNeedsUpdated;
-
-    /**
-     * Determines whether a space should be used between a comma and its proceeding character in the
-     * CSV file. For example, no padding would be <tt>item1,item2</tt> and with padding would be
-     * <tt>item1, item2</tt>.
-     */
-    private boolean usePadding;
+    private LineFormat format = new LineFormat();
 
     /**
      * The writer to the CSV file.
@@ -174,8 +148,7 @@ public final class CsvWriter implements AutoCloseable {
      * @param n the number of columns
      */
     public void setColumnCount(int n) {
-        columnCount = n;
-        formatNeedsUpdated = true;
+        format.setArgCount(n);
     }
 
     /**
@@ -188,13 +161,7 @@ public final class CsvWriter implements AutoCloseable {
      * @param s the newline character or sequence of characters to be set
      */
     public void setNewLine(@Nullable String s) {
-        if (s == null) {
-             return;
-        }
-        if (s.equals("\n") || s.equals("\r\n") || s.equals("\r")) {
-            eol = s;
-        }
-        formatNeedsUpdated = true;
+        format.setEndOfLine(s);
     }
 
     /**
@@ -206,9 +173,8 @@ public final class CsvWriter implements AutoCloseable {
      *
      * @param b boolean if <tt>true</tt>, then a white space will be used to separate columns
      */
-    public void setPadding(boolean b) {
-        usePadding = b;
-        formatNeedsUpdated = true;
+    public void setUsePadding(boolean b) {
+        format.setUsePadding(b);
     }
 
     /**
@@ -224,15 +190,12 @@ public final class CsvWriter implements AutoCloseable {
         if (strings == null) {
             throw new IllegalArgumentException("Strings cannot be null");
         }
-        if (columnCount > 0 && strings.length != columnCount) {
+        if (strings.length != format.getArgCount()) {
             throw new IllegalArgumentException(
-                    String.format("Number of columns provided (%d) does not match the amount needed (%d)",
-                                  strings.length, columnCount));
+                    String.format("Number of columns provided (%d) does not match the amount required (%d)",
+                                  strings.length, format.getArgCount()));
         }
-        if (formatNeedsUpdated) {
-            updateFormat();
-        }
-        writer.write(new Formatter().format(format, strings).toString());
+        writer.write(new Formatter().format(format.get(), strings).toString());
     }
 
     /**
@@ -259,27 +222,6 @@ public final class CsvWriter implements AutoCloseable {
             throw new IllegalArgumentException("File cannot be a directory: " + file);
         }
         writer = new BufferedWriter(new FileWriter(file, append));
-    }
-
-    /**
-     * Updates the {@link CsvWriter#format} with the data configurable through the public setters.
-     * The padding, newline, and column count are used to create a new <tt>format</tt> which will be
-     * used in writing out a single line of the CSV file. Note that this method will subsequently
-     * set the {@link CsvWriter#formatNeedsUpdated} boolean to <tt>false</tt>.
-     */
-    private void updateFormat() {
-        format = "%s";
-        if (columnCount > 0) {
-            String delimiter = ",";
-            if (usePadding) {
-                delimiter += " ";
-            }
-            for (int i = 1; i < columnCount; i++) {
-                format +=  delimiter + "%s";
-            }
-        }
-        format += eol;
-        formatNeedsUpdated = false;
     }
 
 }
