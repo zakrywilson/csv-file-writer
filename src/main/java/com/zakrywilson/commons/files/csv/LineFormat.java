@@ -94,7 +94,7 @@ final class LineFormat {
      * @param n the number of <tt>%s</tt>'s
      */
     void setArgCount(int n) {
-        if (argCount == n) {
+        if (n == argCount) {
             return;
         }
         if (n > 1) {
@@ -121,14 +121,14 @@ final class LineFormat {
      *
      * @param s the newline character or sequence of characters to be set
      */
-    void setEndOfLine(String s) {
-        if (s == null) {
+    void setEndOfLine(@Nullable String s) {
+        if (s == null || s.equals(endOfLine)) {
             return;
         }
-        if (s.equals("\n") || s.equals("\r\n") || s.equals("\r")) {
+        if (s.equals("\n") || s.equals("\r\n") || s.equals("\r") || s.equals("")) {
             endOfLine = s;
+            needsUpdating = true;
         }
-        needsUpdating = true;
     }
 
     /**
@@ -154,6 +154,9 @@ final class LineFormat {
      * @param b boolean if <tt>true</tt>, then a white space will be used to separate elements
      */
     void setUsePadding(boolean b) {
+        if (b == usePadding) {
+            return;
+        }
         usePadding = b;
         needsUpdating = true;
     }
