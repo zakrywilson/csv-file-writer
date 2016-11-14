@@ -6,14 +6,14 @@ import org.junit.Test;
 public class LineFormatTest {
 
     @Test
-    public void setArgCount() throws Exception {
-        LineFormat format = new LineFormat();
+    public void setColumns() throws Exception {
+        LineFormat format = new LineFormat(1);
 
         int argCount, target, received;
 
         // Check default value and expect 1
         target = 1;
-        received = format.getArgCount();
+        received = format.getColumns();
         if (received != target) {
             Assert.fail(String.format("Should have returned %d for default value but returned %d",
                         target, received));
@@ -21,16 +21,16 @@ public class LineFormatTest {
 
         // Pass in -1 but expect 1 to have been set
         argCount = -1;
-        format.setArgCount(argCount);
-        received = format.getArgCount();
+        format.setColumns(argCount);
+        received = format.getColumns();
         if (received != target) {
             Assert.fail(String.format("Should have returned %d but returned %d", target, received));
         }
 
         // Pass in 0 but expect 1 to have been set
         argCount = 0;
-        format.setArgCount(argCount);
-        received = format.getArgCount();
+        format.setColumns(argCount);
+        received = format.getColumns();
         if (received != target) {
             Assert.fail(String.format("Should have returned %d but returned %d", target, received));
         }
@@ -38,8 +38,8 @@ public class LineFormatTest {
         // Pass in an int greater than 1 and expect that same value to have been set
         for (int i = 1; i <= 10; i++) {
             argCount = i;
-            format.setArgCount(argCount);
-            received = format.getArgCount();
+            format.setColumns(argCount);
+            received = format.getColumns();
             if (received != argCount) {
                 Assert.fail(String.format("Should have returned %d but returned %d", argCount, received));
             }
@@ -48,7 +48,7 @@ public class LineFormatTest {
 
     @Test
     public void setEndOfLine() throws Exception {
-        LineFormat format = new LineFormat();
+        LineFormat format = new LineFormat(1);
 
         String newline, target, received;
 
@@ -67,12 +67,13 @@ public class LineFormatTest {
             Assert.fail("Should have returned system's default line break for a null value");
         }
 
-        // Pass in an empty string but expect the system's default
+        // Pass in an empty string and expect it to be set
         newline = "";
+        target = "";
         format.setEndOfLine(newline);
         received = format.getEndOfLine();
         if (!received.equals(target)) {
-            Assert.fail("Should have returned system's default line break for an empty string");
+            Assert.fail("Should have returned an empty string");
         }
 
         // Pass in \n and expect to it to be set
@@ -104,30 +105,32 @@ public class LineFormatTest {
     }
 
     @Test
-    public void setUsePadding() throws Exception {
-        LineFormat format = new LineFormat();
+    public void setDelimiter() throws Exception {
+        LineFormat format = new LineFormat(1);
 
-        // Default value should be "false"
-        if (format.isUsingPadding()) {
-            Assert.fail("Default usePadding boolean value should be 'false'");
+        // Default value should be a comma
+        if (!format.getDelimiter().equals(",")) {
+            Assert.fail("Default delimiter should be a comma: " + format.getDelimiter());
         }
 
-        // Set to true, expect true
-        format.setUsePadding(true);
-        if (!format.isUsingPadding()) {
-            Assert.fail("usePadding boolean value should have been 'true'");
+        // Set delimiter to a tab character
+        String target = "\t";
+        format.setDelimiter(target);
+        if (!format.getDelimiter().equals(target)) {
+            Assert.fail("Delimiter value should have been a tab character: " + format.getDelimiter());
         }
 
-        // Set to false, expect false
-        format.setUsePadding(false);
-        if (format.isUsingPadding()) {
-            Assert.fail("usePadding boolean value should have been 'false'");
+        // Set delimiter to a comma and space character sequence
+        target = ", ";
+        format.setDelimiter(target);
+        if (!format.getDelimiter().equals(target)) {
+            Assert.fail("Delimiter value should have been '" + target + "': " + format.getDelimiter());
         }
     }
 
     @Test
     public void get() throws Exception {
-
+        Assert.fail("Test not yet implemented");
     }
 
 }
