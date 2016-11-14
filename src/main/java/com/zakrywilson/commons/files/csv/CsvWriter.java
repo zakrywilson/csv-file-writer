@@ -9,6 +9,18 @@ import java.util.Formatter;
 
 /**
  * Convenience class for writing CSV files.
+ * <p>
+ * Class allows for only {@link CsvWriter#write(String...)} to be called to write out a line to the
+ * CSV file by only passing in the objects as variable arguments.
+ * <p>
+ * Configurable attributes of the line are as follows: the column count, the use of padding, and the
+ * line break. The column count is how many columns will be in a single line. More specifically, an
+ * column count of <tt>3</tt> would expect three elements passed into {@link
+ * CsvWriter#write(String...)}, resulting in a string such as <tt>item1,item2,item3</tt> in the CSV
+ * file. The padding is a single space between a comma and a proceeding column element. For example,
+ * using padding would result in a string <tt>item1, item2, item3</tt> and without padding would
+ * result in <tt>item1,item2,item3</tt>. The line break can be one of the following: <tt>\n</tt>,
+ * <tt>\r</tt>, <tt>\r\n</tt> or an empty string.
  *
  * @author Zach Wilson
  */
