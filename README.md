@@ -57,8 +57,6 @@ try (CsvWriter writer = new CsvWriter(path, columns) {
 // column1  column2
 ```
 
-### Other 
-
 ## Requirements
 
 Java 8  
