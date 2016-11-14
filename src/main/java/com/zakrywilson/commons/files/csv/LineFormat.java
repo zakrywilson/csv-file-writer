@@ -2,6 +2,19 @@ package com.zakrywilson.commons.files.csv;
 
 import com.sun.istack.internal.Nullable;
 
+/**
+ * Represents the format for a single line in a CSV file.
+ * <p>
+ * Configurable attributes to a <tt>LineFormat</tt>: the arg count, the use of padding, and the
+ * line break. The arg count is how many <tt>%s</tt>'s will be in a single line. More specifically,
+ * an arg count of <tt>3</tt> would result in a line with three <tt>%s</tt>'s, separated by commas
+ * (i.e., <tt>%s,%s,%s</tt>). The padding is a single space between a comma and a proceeding
+ * <tt>%s</tt>. For example, using padding would result in a string <tt>%s, %s, %s</tt> and without
+ * padding would result in <tt>%s,%s,%s</tt>. The line break can be one of the following:
+ * <tt>\n</tt>, <tt>\r</tt>, <tt>\r\n</tt> or an empty string.
+ *
+ * @author Zach Wilson
+ */
 final class LineFormat {
 
     /**
@@ -117,7 +130,8 @@ final class LineFormat {
      * <p>
      * The system's default is used if the line break is not set, the provided line break is
      * <tt>null</tt>, or if the character or sequence of characters is not one of the following:
-     * <tt>\n</tt>, <tt>\r\n</tt>, or <tt>\r</tt>.
+     * <tt>\n</tt>, <tt>\r\n</tt>, or <tt>\r</tt>. An empty string will result in <b>no</b> line
+     * break being used.
      *
      * @param s the newline character or sequence of characters to be set
      */
