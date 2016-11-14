@@ -3,10 +3,18 @@ package com.zakrywilson.commons.files.csv;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Tests {@link LineFormat}.
+ *
+ * @author Zach Wilson
+ */
 public class LineFormatTest {
 
+    /**
+     * Tests {@link LineFormat#setColumns(int)}.
+     */
     @Test
-    public void setColumns() throws Exception {
+    public void setColumns() {
         LineFormat format = new LineFormat(1);
 
         int argCount, target, received;
@@ -46,8 +54,11 @@ public class LineFormatTest {
         }
     }
 
+    /**
+     * Tests {@link LineFormat#setEndOfLine(String)}.
+     */
     @Test
-    public void setEndOfLine() throws Exception {
+    public void setEndOfLine() {
         LineFormat format = new LineFormat(1);
 
         String newline, target, received;
@@ -104,8 +115,11 @@ public class LineFormatTest {
         }
     }
 
+    /**
+     * Tests {@link LineFormat#setDelimiter(String)}.
+     */
     @Test
-    public void setDelimiter() throws Exception {
+    public void setDelimiter() {
         LineFormat format = new LineFormat(1);
 
         // Default value should be a comma
@@ -128,8 +142,11 @@ public class LineFormatTest {
         }
     }
 
+    /**
+     * Tests {@link LineFormat#get()}.
+     */
     @Test
-    public void get() throws Exception {
+    public void get() {
         Assert.fail("Test not yet implemented");
     }
 
