@@ -1,6 +1,8 @@
 package com.zakrywilson.commons.files.csv;
 
-public class LineFormat {
+import com.sun.istack.internal.Nullable;
+
+final class LineFormat {
 
     /**
      * The number of columns in the CSV file. Default is <tt>1</tt> and the value should never be
